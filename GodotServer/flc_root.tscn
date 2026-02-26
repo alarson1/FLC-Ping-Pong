@@ -1,0 +1,78 @@
+[gd_scene load_steps=16 format=3 uid="uid://dgrr2wlovkt04"]
+
+[ext_resource type="Script" path="res://flc_root.gd" id="1_7isue"]
+[ext_resource type="Script" path="res://SimLink.gd" id="1_vdn7q"]
+[ext_resource type="Script" path="res://sensing_template.gd" id="2_3yp5c"]
+[ext_resource type="PackedScene" uid="uid://cpk5g5h4rep12" path="res://noodles_server/utility/CameraRig.tscn" id="4_1ewb7"]
+[ext_resource type="Script" path="res://noodles_server/noodles_server_root.gd" id="4_fqbtt"]
+[ext_resource type="Script" path="res://noodles_server/vrpn/query_vrpn.gd" id="6_4prhv"]
+[ext_resource type="Script" path="res://noodles_server/position_set.gd" id="8_ih50r"]
+[ext_resource type="Script" path="res://noodles_server/position_updated.gd" id="9_bineq"]
+[ext_resource type="Script" path="res://noodles_server/vrpn/vrpn_link.gd" id="11_ysgcl"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_rl4yx"]
+
+[sub_resource type="Sky" id="Sky_iechx"]
+sky_material = SubResource("ProceduralSkyMaterial_rl4yx")
+
+[sub_resource type="Environment" id="Environment_sqvvf"]
+background_mode = 2
+sky = SubResource("Sky_iechx")
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_tqtmi"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8eu5y"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_5t1vn"]
+material = SubResource("StandardMaterial3D_8eu5y")
+size = Vector3(0.2, 0.2, 0.2)
+
+[node name="FLCRoot" type="Node3D"]
+script = ExtResource("1_7isue")
+
+[node name="Sensing" type="Node" parent="."]
+script = ExtResource("2_3yp5c")
+
+[node name="SimLink" type="Node" parent="."]
+script = ExtResource("1_vdn7q")
+host_port = 5001
+
+[node name="CameraRig" parent="." instance=ExtResource("4_1ewb7")]
+spring_length = 2.0
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_sqvvf")
+camera_attributes = SubResource("CameraAttributesPractical_tqtmi")
+
+[node name="NoodlesRoot" type="Node3D" parent="."]
+script = ExtResource("4_fqbtt")
+hostname = "10.1.3.94"
+
+[node name="VRPNQuery" type="Node3D" parent="NoodlesRoot" node_paths=PackedStringArray("relative_to")]
+script = ExtResource("6_4prhv")
+relative_to = NodePath("..")
+function_name = "get_transform"
+
+[node name="PositionSet" type="Node3D" parent="NoodlesRoot" node_paths=PackedStringArray("relative_to")]
+transform = Transform3D(-3.78552e-08, -2.18557e-08, -1, -0.5, 0.866025, 0, 0.866025, 0.5, -4.37114e-08, 1.6392e-07, 1, -3.75)
+script = ExtResource("8_ih50r")
+relative_to = NodePath("..")
+function_name = "position_set"
+
+[node name="PositionUpdated" type="Node3D" parent="NoodlesRoot" node_paths=PackedStringArray("relative_to")]
+transform = Transform3D(-3.78552e-08, -2.18557e-08, -1, -0.5, 0.866025, 0, 0.866025, 0.5, -4.37114e-08, 1.6392e-07, 1, -3.75)
+script = ExtResource("9_bineq")
+relative_to = NodePath("..")
+function_name = "position_updated"
+
+[node name="Object" type="MeshInstance3D" parent="NoodlesRoot"]
+mesh = SubResource("BoxMesh_5t1vn")
+
+[node name="VRPNLink" type="Node" parent="NoodlesRoot/Object"]
+script = ExtResource("11_ysgcl")
+vrpn_name = "Object"
+vrpn_server = "10.16.10.10"
+pre_transform_rotation = Quaternion(0, 1, 0, 0)
+
+[connection signal="simulation_completed" from="SimLink" to="." method="intercept_sim"]
+[connection signal="simulation_failed" from="SimLink" to="." method="intercept_failed"]

@@ -1,0 +1,7 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://cnlpumos3cl3s"]
+
+[ext_resource type="FontFile" uid="uid://66lom7dgxppw" path="res://assets/Montserrat-Regular.ttf" id="1_eblvh"]
+
+[resource]
+default_font = ExtResource("1_eblvh")
+default_font_size = 14

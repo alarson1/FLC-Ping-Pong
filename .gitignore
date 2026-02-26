@@ -1,0 +1,142 @@
+##################################################
+# GODOT 4
+##################################################
+
+# Godot import cache
+.import/
+.godot/
+export_presets.cfg
+*.translation
+
+# Mono / C# (if ever used)
+.mono/
+data_*/
+mono_crash.*.json
+
+# Exported builds
+export/
+build/
+bin/
+
+# Godot logs
+godot.log
+
+
+##################################################
+# PYTHON
+##################################################
+
+# Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+.python-version
+
+# Python build artifacts
+dist/
+build/
+*.egg-info/
+.eggs/
+
+# pip
+pip-log.txt
+pip-delete-this-directory.txt
+
+# pytest
+.pytest_cache/
+
+# Coverage
+.coverage
+htmlcov/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Flask / FastAPI temp
+instance/
+
+
+##################################################
+# IDEs
+##################################################
+
+# PyCharm
+.idea/
+*.iml
+
+# VSCode
+.vscode/
+
+# Sublime
+*.sublime-project
+*.sublime-workspace
+
+
+##################################################
+# MACOS
+##################################################
+
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# Spotlight
+.Spotlight-V100
+.Trashes
+
+# macOS temp
+*.swp
+*.swo
+
+
+##################################################
+# SSH / Keys (VERY IMPORTANT)
+##################################################
+
+*.pem
+*.key
+id_rsa
+id_ed25519
+
+
+##################################################
+# ENV / SECRETS
+##################################################
+
+.env
+.env.*
+*.env
+secrets.json
+
+
+##################################################
+# LOGS
+##################################################
+
+*.log
+logs/
+
+
+##################################################
+# Misc
+##################################################
+
+*.tmp
+*.bak
+*.backup
+*.orig
+
+##################################################
+# Docker (if used)
+##################################################
+
+docker-compose.override.yml

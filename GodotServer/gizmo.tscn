@@ -1,0 +1,60 @@
+[gd_scene load_steps=7 format=3 uid="uid://pnrmfcqkxpw3"]
+
+[ext_resource type="Script" path="res://gizmo.gd" id="1_04jne"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_b7reu"]
+top_radius = 0.01
+bottom_radius = 0.01
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1r1k1"]
+albedo_color = Color(0, 1, 0, 1)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_1hksf"]
+radius = 0.1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_at1hc"]
+albedo_color = Color(0, 0, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_luxy6"]
+albedo_color = Color(1, 0, 0, 1)
+emission = Color(1, 0.121569, 0.129412, 1)
+emission_energy_multiplier = 0.36
+rim = 0.0
+rim_tint = 1.0
+backlight = Color(1, 1, 1, 1)
+grow_amount = 0.1
+
+[node name="Gizmo" type="Node3D"]
+script = ExtResource("1_04jne")
+
+[node name="y_axes" type="Area3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="y_axes"]
+mesh = SubResource("CylinderMesh_b7reu")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_1r1k1")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="y_axes"]
+shape = SubResource("CylinderShape3D_1hksf")
+
+[node name="z_axes" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="z_axes"]
+mesh = SubResource("CylinderMesh_b7reu")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_at1hc")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="z_axes"]
+shape = SubResource("CylinderShape3D_1hksf")
+
+[node name="x_axes" type="Area3D" parent="."]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="x_axes"]
+mesh = SubResource("CylinderMesh_b7reu")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_luxy6")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="x_axes"]
+shape = SubResource("CylinderShape3D_1hksf")
