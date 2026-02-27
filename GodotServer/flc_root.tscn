@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://dgrr2wlovkt04"]
+[gd_scene load_steps=18 format=3 uid="uid://dgrr2wlovkt04"]
 
 [ext_resource type="Script" path="res://flc_root.gd" id="1_7isue"]
 [ext_resource type="Script" path="res://SimLink.gd" id="1_vdn7q"]
@@ -26,6 +26,10 @@ sky = SubResource("Sky_iechx")
 [sub_resource type="BoxMesh" id="BoxMesh_5t1vn"]
 material = SubResource("StandardMaterial3D_8eu5y")
 size = Vector3(0.2, 0.2, 0.2)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ywond"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_xuv2m"]
 
 [node name="FLCRoot" type="Node3D"]
 script = ExtResource("1_7isue")
@@ -73,6 +77,14 @@ script = ExtResource("11_ysgcl")
 vrpn_name = "Object"
 vrpn_server = "10.16.10.10"
 pre_transform_rotation = Quaternion(0, 1, 0, 0)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="NoodlesRoot"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NoodlesRoot/StaticBody3D"]
+shape = SubResource("SphereShape3D_ywond")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NoodlesRoot/StaticBody3D"]
+mesh = SubResource("SphereMesh_xuv2m")
 
 [connection signal="simulation_completed" from="SimLink" to="." method="intercept_sim"]
 [connection signal="simulation_failed" from="SimLink" to="." method="intercept_failed"]
