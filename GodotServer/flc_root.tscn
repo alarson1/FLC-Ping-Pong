@@ -1,14 +1,14 @@
 [gd_scene load_steps=16 format=3 uid="uid://dgrr2wlovkt04"]
 
-[ext_resource type="Script" path="res://flc_root.gd" id="1_7isue"]
-[ext_resource type="Script" path="res://SimLink.gd" id="1_vdn7q"]
-[ext_resource type="Script" path="res://sensing_template.gd" id="2_3yp5c"]
+[ext_resource type="Script" uid="uid://btt7awehlr7gh" path="res://flc_root.gd" id="1_7isue"]
+[ext_resource type="Script" uid="uid://dtsobsw7jo85h" path="res://SimLink.gd" id="1_vdn7q"]
+[ext_resource type="Script" uid="uid://2y4u8e5ipege" path="res://sensing_template.gd" id="2_3yp5c"]
 [ext_resource type="PackedScene" uid="uid://cpk5g5h4rep12" path="res://noodles_server/utility/CameraRig.tscn" id="4_1ewb7"]
-[ext_resource type="Script" path="res://noodles_server/noodles_server_root.gd" id="4_fqbtt"]
-[ext_resource type="Script" path="res://noodles_server/vrpn/query_vrpn.gd" id="6_4prhv"]
-[ext_resource type="Script" path="res://noodles_server/position_set.gd" id="8_ih50r"]
-[ext_resource type="Script" path="res://noodles_server/position_updated.gd" id="9_bineq"]
-[ext_resource type="Script" path="res://noodles_server/vrpn/vrpn_link.gd" id="11_ysgcl"]
+[ext_resource type="Script" uid="uid://bxgkyu3asqsyw" path="res://noodles_server/noodles_server_root.gd" id="4_fqbtt"]
+[ext_resource type="Script" uid="uid://kw4urrci2g2a" path="res://noodles_server/vrpn/query_vrpn.gd" id="6_4prhv"]
+[ext_resource type="Script" uid="uid://2l2ysfmdgg82" path="res://noodles_server/position_set.gd" id="8_ih50r"]
+[ext_resource type="Script" uid="uid://wc0jcny4qd3i" path="res://noodles_server/position_updated.gd" id="9_bineq"]
+[ext_resource type="Script" uid="uid://e2ph403hc11y" path="res://noodles_server/vrpn/vrpn_link.gd" id="11_ysgcl"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_rl4yx"]
 
