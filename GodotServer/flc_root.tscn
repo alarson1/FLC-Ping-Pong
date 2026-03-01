@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://dgrr2wlovkt04"]
+[gd_scene load_steps=23 format=3 uid="uid://dgrr2wlovkt04"]
 
 [ext_resource type="Script" uid="uid://btt7awehlr7gh" path="res://flc_root.gd" id="1_7isue"]
 [ext_resource type="Script" uid="uid://dtsobsw7jo85h" path="res://SimLink.gd" id="1_vdn7q"]
@@ -26,6 +26,25 @@ sky = SubResource("Sky_iechx")
 [sub_resource type="BoxMesh" id="BoxMesh_5t1vn"]
 material = SubResource("StandardMaterial3D_8eu5y")
 size = Vector3(0.2, 0.2, 0.2)
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_1xjvr"]
+friction = 0.3
+bounce = 0.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_b5x8u"]
+albedo_color = Color(1, 0.34, 0.34, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_fp5tf"]
+material = SubResource("StandardMaterial3D_b5x8u")
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_bdqal"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ya8bf"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wuy68"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_4mn5x"]
+material = SubResource("StandardMaterial3D_wuy68")
 
 [node name="FLCRoot" type="Node3D"]
 script = ExtResource("1_7isue")
@@ -66,6 +85,7 @@ relative_to = NodePath("..")
 function_name = "position_updated"
 
 [node name="Object" type="MeshInstance3D" parent="NoodlesRoot"]
+visible = false
 mesh = SubResource("BoxMesh_5t1vn")
 
 [node name="VRPNLink" type="Node" parent="NoodlesRoot/Object"]
@@ -73,6 +93,32 @@ script = ExtResource("11_ysgcl")
 vrpn_name = "Object"
 vrpn_server = "10.16.10.10"
 pre_transform_rotation = Quaternion(0, 1, 0, 0)
+
+[node name="Ball" type="RigidBody3D" parent="NoodlesRoot"]
+mass = 0.003
+physics_material_override = SubResource("PhysicsMaterial_1xjvr")
+continuous_cd = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NoodlesRoot/Ball"]
+transform = Transform3D(0.02, 0, 0, 0, 0.02, 0, 0, 0, 0.02, 0, 0, 0)
+mesh = SubResource("SphereMesh_fp5tf")
+skeleton = NodePath("../CollisionShape3D")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NoodlesRoot/Ball"]
+transform = Transform3D(0.02, 0, 0, 0, 0.02, 0, 0, 0, 0.02, 0, 0, 0)
+shape = SubResource("SphereShape3D_bdqal")
+
+[node name="Node3D" type="Node3D" parent="NoodlesRoot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.824573, 0)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="NoodlesRoot/Node3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NoodlesRoot/Node3D/StaticBody3D"]
+transform = Transform3D(2, 0, 0, 0, 0.1, 0, 0, 0, 2, 0, -0.05, 0)
+shape = SubResource("BoxShape3D_ya8bf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NoodlesRoot/Node3D/StaticBody3D"]
+mesh = SubResource("PlaneMesh_4mn5x")
 
 [connection signal="simulation_completed" from="SimLink" to="." method="intercept_sim"]
 [connection signal="simulation_failed" from="SimLink" to="." method="intercept_failed"]
