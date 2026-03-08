@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://dgrr2wlovkt04"]
+[gd_scene load_steps=37 format=3 uid="uid://dgrr2wlovkt04"]
 
 [ext_resource type="Script" uid="uid://btt7awehlr7gh" path="res://flc_root.gd" id="1_7isue"]
 [ext_resource type="Script" uid="uid://dtsobsw7jo85h" path="res://SimLink.gd" id="1_vdn7q"]
@@ -9,6 +9,8 @@
 [ext_resource type="Script" uid="uid://2l2ysfmdgg82" path="res://noodles_server/position_set.gd" id="8_ih50r"]
 [ext_resource type="Script" uid="uid://wc0jcny4qd3i" path="res://noodles_server/position_updated.gd" id="9_bineq"]
 [ext_resource type="Script" uid="uid://8452xxaywfbc" path="res://game_root.gd" id="9_yox0r"]
+[ext_resource type="Script" uid="uid://dtfsc6vjgyexl" path="res://paddle.gd" id="10_b5x8u"]
+[ext_resource type="Script" uid="uid://cglmhkpawseg1" path="res://ball.gd" id="10_fp5tf"]
 [ext_resource type="Script" uid="uid://e2ph403hc11y" path="res://noodles_server/vrpn/vrpn_link.gd" id="11_ysgcl"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_rl4yx"]
@@ -33,15 +35,6 @@ albedo_color = Color(1, 0.34, 0.34, 1)
 material = SubResource("StandardMaterial3D_b5x8u")
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_bdqal"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_1xjvr"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8eu5y"]
-albedo_color = Color(1, 0, 0, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_5t1vn"]
-material = SubResource("StandardMaterial3D_8eu5y")
-size = Vector3(0.2, 0.2, 0.2)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_b5x8u"]
 size = Vector3(1.37, 0.04, 1.525)
@@ -74,6 +67,22 @@ albedo_color = Color(0, 0, 0, 1)
 [sub_resource type="PlaneMesh" id="PlaneMesh_4mn5x"]
 material = SubResource("StandardMaterial3D_wuy68")
 size = Vector2(6, 6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1xjvr"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8eu5y"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_5t1vn"]
+material = SubResource("StandardMaterial3D_8eu5y")
+size = Vector3(0.2, 0.2, 0.2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bdqal"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_ya8bf"]
+material = SubResource("StandardMaterial3D_bdqal")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4mn5x"]
 
 [node name="FLCRoot" type="Node3D"]
 script = ExtResource("1_7isue")
@@ -116,13 +125,14 @@ function_name = "position_updated"
 
 [node name="GameRoot" type="Node3D" parent="NoodlesRoot"]
 script = ExtResource("9_yox0r")
-ball_start_position = Vector3(-1.2, 1, 0)
 
 [node name="Ball" type="RigidBody3D" parent="NoodlesRoot/GameRoot"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.99117, 0)
 mass = 0.003
 physics_material_override = SubResource("PhysicsMaterial_1xjvr")
 continuous_cd = true
+contact_monitor = true
+max_contacts_reported = 8
+script = ExtResource("10_fp5tf")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="NoodlesRoot/GameRoot/Ball"]
 transform = Transform3D(0.02, 0, 0, 0, 0.02, 0, 0, 0, 0.02, 0, 0, 0)
@@ -133,26 +143,10 @@ skeleton = NodePath("../CollisionShape3D")
 transform = Transform3D(0.02, 0, 0, 0, 0.02, 0, 0, 0, 0.02, 0, 0, 0)
 shape = SubResource("SphereShape3D_bdqal")
 
-[node name="Paddle1" type="StaticBody3D" parent="NoodlesRoot/GameRoot"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.575516, 0, 0)
-
-[node name="VRPNLink" type="Node" parent="NoodlesRoot/GameRoot/Paddle1"]
-script = ExtResource("11_ysgcl")
-vrpn_name = "Object"
-vrpn_server = "10.16.10.10"
-pre_transform_rotation = Quaternion(0, 1, 0, 0)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="NoodlesRoot/GameRoot/Paddle1"]
-transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
-shape = SubResource("BoxShape3D_1xjvr")
-
-[node name="Object" type="MeshInstance3D" parent="NoodlesRoot/GameRoot/Paddle1"]
-mesh = SubResource("BoxMesh_5t1vn")
-skeleton = NodePath("../../..")
-
 [node name="Enviroment" type="Node3D" parent="NoodlesRoot/GameRoot"]
 
 [node name="Table&net" type="Node3D" parent="NoodlesRoot/GameRoot/Enviroment"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)
 
 [node name="Table" type="StaticBody3D" parent="NoodlesRoot/GameRoot/Enviroment/Table&net"]
 
@@ -189,6 +183,33 @@ shape = SubResource("BoxShape3D_ya8bf")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="NoodlesRoot/GameRoot/Enviroment/Floor/Floor Hitbox"]
 mesh = SubResource("PlaneMesh_4mn5x")
+
+[node name="Paddle1" type="StaticBody3D" parent="NoodlesRoot/GameRoot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.575516, 0, 0)
+script = ExtResource("10_b5x8u")
+
+[node name="VRPNLink" type="Node" parent="NoodlesRoot/GameRoot/Paddle1"]
+script = ExtResource("11_ysgcl")
+vrpn_name = "MultiMeter"
+vrpn_server = "10.16.10.10"
+pre_transform_rotation = Quaternion(0, 1, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NoodlesRoot/GameRoot/Paddle1"]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
+shape = SubResource("BoxShape3D_1xjvr")
+
+[node name="MultiMeter" type="MeshInstance3D" parent="NoodlesRoot/GameRoot/Paddle1"]
+mesh = SubResource("BoxMesh_5t1vn")
+skeleton = NodePath("../../..")
+
+[node name="ResetBox" type="Area3D" parent="NoodlesRoot/GameRoot"]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 1.00879, 1.18291, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NoodlesRoot/GameRoot/ResetBox"]
+mesh = SubResource("BoxMesh_ya8bf")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NoodlesRoot/GameRoot/ResetBox"]
+shape = SubResource("BoxShape3D_4mn5x")
 
 [connection signal="simulation_completed" from="SimLink" to="." method="intercept_sim"]
 [connection signal="simulation_failed" from="SimLink" to="." method="intercept_failed"]
