@@ -1,6 +1,5 @@
 extends StaticBody3D
 
-
 var previous_position: Vector3
 var tracked_velocity: Vector3 = Vector3.ZERO
 
@@ -8,20 +7,11 @@ func _ready():
 	previous_position = global_position
 
 func _process(delta):
-	REDcalculate_velocity(delta)
+	BLUEcalculate_velocity(delta)
 
 
-var vel = []
-
-func REDcalculate_velocity(delta):
+func BLUEcalculate_velocity(delta):
 	if delta > 0:
 		tracked_velocity = (global_position - previous_position) / delta
-		vel.append(tracked_velocity)
-		vel.pop_front()
 		#print("Tracked velocity: ", tracked_velocity)
 	previous_position = global_position
-	#print(
-		#sqrt(tracked_velocity[0] * tracked_velocity[0] + tracked_velocity[1] * tracked_velocity[1] + tracked_velocity[2] * tracked_velocity[2]) 
-	#)
-	#
-	

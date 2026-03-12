@@ -2,8 +2,9 @@ extends Node3D
 
 var ball_start_position: Vector3 = Vector3(0, 1, -1.5)
 @onready var ball: RigidBody3D = $Ball
-@onready var paddle = $Paddle1
+@onready var paddle = $RedPaddle
 @onready var reset_box = $ResetBox
+@onready var Bluepaddle = $BluePaddle
 
 
 var normal_gravity_scale := 1.0
@@ -17,7 +18,6 @@ func _ready():
 	reset_ball()
 	
 	
-	
 func _process(delta):
 	if can_reset and paddle.global_position.distance_to(reset_box.global_position) < 0.25:
 		print("Reset Ball")
@@ -26,7 +26,8 @@ func _process(delta):
 		await get_tree().create_timer(0.5).timeout
 		can_reset = true
 
-func reset_ball(): # Sets the ball to have gravity off and in a preset position on startup
+func reset_ball(): # Sets the ball to have zero gravity
+	#on startup or when rest box touched
 	ball.freeze = true
 	ball.global_position = ball_start_position
 	ball.linear_velocity = Vector3.ZERO
@@ -41,9 +42,9 @@ func _on_ball_body_entered(body):
 		gravity_enabled = true
 		print("gravity turned on after collision with ", body.name)
 
-	if body.name == "Paddle1":
+	if body.name == "RedPaddle":
 		print("Paddle velocity: ", paddle.tracked_velocity)
-		ball.linear_velocity += paddle.tracked_velocity * 0.8
+		ball.linear_velocity += paddle.tracked_velocity * 1.5
 		print("Ball velocity after hit: ", ball.linear_velocity)
 		
 		
