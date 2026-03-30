@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://wc0jcny4qd3i" path="res://noodles_server/position_updated.gd" id="9_bineq"]
 [ext_resource type="Script" uid="uid://8452xxaywfbc" path="res://game_root.gd" id="9_yox0r"]
 [ext_resource type="Script" uid="uid://dtfsc6vjgyexl" path="res://paddle.gd" id="10_b5x8u"]
+[ext_resource type="Script" uid="uid://b883mq5xk6euw" path="res://ball.gd" id="10_ya8bf"]
 [ext_resource type="Script" uid="uid://e2ph403hc11y" path="res://noodles_server/vrpn/vrpn_link.gd" id="11_ysgcl"]
 [ext_resource type="Script" uid="uid://bgy2ng6wf4s0f" path="res://score_manager.gd" id="13_bdqal"]
 [ext_resource type="Script" uid="uid://8ymnhmoatyrv" path="res://blue_paddle.gd" id="13_ya8bf"]
@@ -25,11 +26,8 @@ sky = SubResource("Sky_iechx")
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_tqtmi"]
 
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_1xjvr"]
-friction = 0.2
-bounce = 0.8
-
 [sub_resource type="SphereShape3D" id="SphereShape3D_fp5tf"]
+margin = 0.001
 radius = 0.04
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ya8bf"]
@@ -163,13 +161,13 @@ script = ExtResource("9_yox0r")
 [node name="Ball" type="RigidBody3D" parent="NoodlesRoot/GameRoot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.99117, 0)
 mass = 0.003
-physics_material_override = SubResource("PhysicsMaterial_1xjvr")
 can_sleep = false
 continuous_cd = true
 contact_monitor = true
 max_contacts_reported = 8
 linear_damp = 0.03
 angular_damp = 0.04
+script = ExtResource("10_ya8bf")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="NoodlesRoot/GameRoot/Ball"]
 shape = SubResource("SphereShape3D_fp5tf")

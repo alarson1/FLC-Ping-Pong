@@ -35,6 +35,8 @@ func reset_ball(): # Sets the ball to have zero gravity
 	ball.gravity_scale = 0.0
 	gravity_enabled = false
 	ball.freeze = false
+	ball.prev_ball_pos = ball_start_position
+
 
 func _on_ball_body_entered(body):
 	if not gravity_enabled:
@@ -42,10 +44,10 @@ func _on_ball_body_entered(body):
 		gravity_enabled = true
 		print("gravity turned on after collision with ", body.name)
 
-	if body.name == "RedPaddle":
-		print("Paddle velocity: ", paddle.tracked_velocity)
-		ball.linear_velocity += paddle.tracked_velocity * 1.5
-		print("Ball velocity after hit: ", ball.linear_velocity)
+	#if body.name == "RedPaddle":
+		#print("Paddle velocity: ", paddle.tracked_velocity)
+		#ball.linear_velocity += paddle.tracked_velocity * 1.5
+		#print("Ball velocity after hit: ", ball.linear_velocity)
 		
 		
 
