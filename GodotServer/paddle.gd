@@ -7,7 +7,7 @@ var tracked_velocity: Vector3 = Vector3.ZERO
 func _ready():
 	previous_position = global_position
 
-func _process(delta):
+func physics_process(delta):
 	calculate_velocity(delta)
 
 

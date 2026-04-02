@@ -1,17 +1,17 @@
-[gd_scene load_steps=37 format=3 uid="uid://dgrr2wlovkt04"]
+[gd_scene load_steps=38 format=3 uid="uid://dgrr2wlovkt04"]
 
 [ext_resource type="Script" uid="uid://btt7awehlr7gh" path="res://flc_root.gd" id="1_7isue"]
 [ext_resource type="Script" uid="uid://dtsobsw7jo85h" path="res://SimLink.gd" id="1_vdn7q"]
 [ext_resource type="Script" uid="uid://2y4u8e5ipege" path="res://sensing_template.gd" id="2_3yp5c"]
 [ext_resource type="PackedScene" uid="uid://cpk5g5h4rep12" path="res://noodles_server/utility/CameraRig.tscn" id="4_1ewb7"]
-[ext_resource type="Script" uid="uid://bxgkyu3asqsyw" path="res://noodles_server/noodles_server_root.gd" id="4_fqbtt"]
-[ext_resource type="Script" uid="uid://kw4urrci2g2a" path="res://noodles_server/vrpn/query_vrpn.gd" id="6_4prhv"]
-[ext_resource type="Script" uid="uid://2l2ysfmdgg82" path="res://noodles_server/position_set.gd" id="8_ih50r"]
-[ext_resource type="Script" uid="uid://wc0jcny4qd3i" path="res://noodles_server/position_updated.gd" id="9_bineq"]
+[ext_resource type="Script" uid="uid://bd2o3f28cvvrh" path="res://noodles_server/noodles_server_root.gd" id="4_fqbtt"]
+[ext_resource type="Script" uid="uid://b2og305c3hvur" path="res://noodles_server/vrpn/query_vrpn.gd" id="6_4prhv"]
+[ext_resource type="Script" uid="uid://51ra3m3mhhjp" path="res://noodles_server/position_set.gd" id="8_ih50r"]
+[ext_resource type="Script" uid="uid://ctjnawnt8l8kn" path="res://noodles_server/position_updated.gd" id="9_bineq"]
 [ext_resource type="Script" uid="uid://8452xxaywfbc" path="res://game_root.gd" id="9_yox0r"]
 [ext_resource type="Script" uid="uid://dtfsc6vjgyexl" path="res://paddle.gd" id="10_b5x8u"]
 [ext_resource type="Script" uid="uid://cglmhkpawseg1" path="res://ball.gd" id="10_fp5tf"]
-[ext_resource type="Script" uid="uid://e2ph403hc11y" path="res://noodles_server/vrpn/vrpn_link.gd" id="11_ysgcl"]
+[ext_resource type="Script" uid="uid://y2784yt64hht" path="res://noodles_server/vrpn/vrpn_link.gd" id="11_ysgcl"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_rl4yx"]
 
@@ -24,8 +24,7 @@ sky = SubResource("Sky_iechx")
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_tqtmi"]
 
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_1xjvr"]
-friction = 0.3
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_fp5tf"]
 bounce = 0.8
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_b5x8u"]
@@ -68,6 +67,8 @@ albedo_color = Color(0, 0, 0, 1)
 material = SubResource("StandardMaterial3D_wuy68")
 size = Vector2(6, 6)
 
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_bdqal"]
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_1xjvr"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8eu5y"]
@@ -96,6 +97,7 @@ host_port = 5001
 
 [node name="CameraRig" parent="." instance=ExtResource("4_1ewb7")]
 spring_length = 2.0
+maxZoom = 1.0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_sqvvf")
@@ -128,7 +130,7 @@ script = ExtResource("9_yox0r")
 
 [node name="Ball" type="RigidBody3D" parent="NoodlesRoot/GameRoot"]
 mass = 0.003
-physics_material_override = SubResource("PhysicsMaterial_1xjvr")
+physics_material_override = SubResource("PhysicsMaterial_fp5tf")
 continuous_cd = true
 contact_monitor = true
 max_contacts_reported = 8
@@ -186,6 +188,7 @@ mesh = SubResource("PlaneMesh_4mn5x")
 
 [node name="Paddle1" type="StaticBody3D" parent="NoodlesRoot/GameRoot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.575516, 0, 0)
+physics_material_override = SubResource("PhysicsMaterial_bdqal")
 script = ExtResource("10_b5x8u")
 
 [node name="VRPNLink" type="Node" parent="NoodlesRoot/GameRoot/Paddle1"]

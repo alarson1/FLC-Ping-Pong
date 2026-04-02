@@ -1,6 +1,11 @@
 extends Node3D
 
 var ball_start_position: Vector3 = Vector3(0, 1, -1.5)
+var last_contacts: Array[StringName]
+var bounce_counterR: int = 0
+var bounce_counterB: int = 0
+var red_score: int
+var blue_score: int
 @onready var ball: RigidBody3D = $Ball
 @onready var paddle = $Paddle1
 @onready var reset_box = $ResetBox
@@ -25,6 +30,7 @@ func _process(delta):
 		can_reset = false
 		await get_tree().create_timer(0.5).timeout
 		can_reset = true
+	_score()
 
 func reset_ball(): # Sets the ball to have gravity off and in a preset position on startup
 	ball.freeze = true
@@ -40,14 +46,44 @@ func _on_ball_body_entered(body):
 		ball.gravity_scale = normal_gravity_scale
 		gravity_enabled = true
 		print("gravity turned on after collision with ", body.name)
-
+		
+	last_contacts.push_back(body.name)
+	if last_contacts.size() > 3:
+		last_contacts.pop_front()
+	
 	if body.name == "Paddle1":
 		print("Paddle velocity: ", paddle.tracked_velocity)
 		ball.linear_velocity += paddle.tracked_velocity * 0.8
 		print("Ball velocity after hit: ", ball.linear_velocity)
+		bounce_counterR = 0
+		bounce_counterB = 0
 		
-		
+	match last_contacts[2]:
+		#&"Paddle1":
+			#print("Paddle velocity: ", paddle.tracked_velocity)
+			#ball.linear_velocity += paddle.tracked_velocity * 0.8
+			#print("Ball velocity after hit: ", ball.linear_velocity)
+			#bounce_counterR = 0
+			#bounce_counterB = 0
+		&"Table":
+			bounce_counterR += 1
+			if ball.global_position.z < 0:
+				bounce_counterR += 1
+			elif ball.global_position.z > 0:
+				bounce_counterB += 1
+		&"Net":
+			if last_contacts[1] == &"Paddle1":
+				blue_score += 1
+			elif last_contacts[1] == &"Paddle2":
+				red_score += 1
+				
+func _score():
+	if bounce_counterR >= 2:
+		blue_score += 1;
+	if bounce_counterB >= 2:
+		red_score += 1;
 
-		
-
-		
+	if ball.global_position.y < 0 && ball.global_position.z < 0 && (last_contacts[1] == &"Paddle2" || last_contacts[0] == &"Paddle2"):
+		blue_score += 1
+	if ball.global_position.y < 0 && ball.global_position.z > 0 && (last_contacts[1] == &"Paddle1" || last_contacts[0] == &"Paddle1"):
+		red_score += 1

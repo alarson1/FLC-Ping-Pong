@@ -5,6 +5,7 @@ var hit_strength: float = 0.8
 var can_receive_hit := true
 
 func _ready():
+	continuous_cd = true
 	body_entered.connect(_on_body_entered)
 
 func _on_body_entered(body):
