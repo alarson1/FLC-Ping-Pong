@@ -7,8 +7,9 @@ var bounce_counterB: int = 0
 var red_score: int
 var blue_score: int
 @onready var ball: RigidBody3D = $Ball
-@onready var paddle = $Paddle1
+@onready var paddle = $RedPaddle
 @onready var reset_box = $ResetBox
+@onready var Bluepaddle = $BluePaddle
 
 
 var normal_gravity_scale := 1.0
@@ -22,7 +23,6 @@ func _ready():
 	reset_ball()
 	
 	
-	
 func _process(delta):
 	if can_reset and paddle.global_position.distance_to(reset_box.global_position) < 0.25:
 		print("Reset Ball")
@@ -32,7 +32,8 @@ func _process(delta):
 		can_reset = true
 	_score()
 
-func reset_ball(): # Sets the ball to have gravity off and in a preset position on startup
+func reset_ball(): # Sets the ball to have zero gravity
+	#on startup or when rest box touched
 	ball.freeze = true
 	ball.global_position = ball_start_position
 	ball.linear_velocity = Vector3.ZERO
@@ -40,6 +41,8 @@ func reset_ball(): # Sets the ball to have gravity off and in a preset position 
 	ball.gravity_scale = 0.0
 	gravity_enabled = false
 	ball.freeze = false
+	ball.prev_ball_pos = ball_start_position
+
 
 func _on_ball_body_entered(body):
 	if not gravity_enabled:
@@ -51,28 +54,27 @@ func _on_ball_body_entered(body):
 	if last_contacts.size() > 3:
 		last_contacts.pop_front()
 	
-	if body.name == "Paddle1":
+	if body.name == "RedPaddle":
 		print("Paddle velocity: ", paddle.tracked_velocity)
-		ball.linear_velocity += paddle.tracked_velocity * 0.8
+		ball.linear_velocity += paddle.tracked_velocity * 1.5
 		print("Ball velocity after hit: ", ball.linear_velocity)
 		bounce_counterR = 0
 		bounce_counterB = 0
 		
 	match last_contacts[2]:
-		#&"Paddle1":
+		#&"RedPaddle":
 			#print("Paddle velocity: ", paddle.tracked_velocity)
-			#ball.linear_velocity += paddle.tracked_velocity * 0.8
+			#ball.linear_velocity += paddle.tracked_velocity * 1.5
 			#print("Ball velocity after hit: ", ball.linear_velocity)
 			#bounce_counterR = 0
 			#bounce_counterB = 0
 		&"Table":
-			bounce_counterR += 1
 			if ball.global_position.z < 0:
 				bounce_counterR += 1
 			elif ball.global_position.z > 0:
 				bounce_counterB += 1
 		&"Net":
-			if last_contacts[1] == &"Paddle1":
+			if last_contacts[1] == &"RedPaddle":
 				blue_score += 1
 			elif last_contacts[1] == &"Paddle2":
 				red_score += 1
@@ -85,5 +87,5 @@ func _score():
 
 	if ball.global_position.y < 0 && ball.global_position.z < 0 && (last_contacts[1] == &"Paddle2" || last_contacts[0] == &"Paddle2"):
 		blue_score += 1
-	if ball.global_position.y < 0 && ball.global_position.z > 0 && (last_contacts[1] == &"Paddle1" || last_contacts[0] == &"Paddle1"):
+	if ball.global_position.y < 0 && ball.global_position.z > 0 && (last_contacts[1] == &"RedPaddle" || last_contacts[0] == &"RedPaddle"):
 		red_score += 1
