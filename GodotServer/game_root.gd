@@ -1,11 +1,14 @@
 extends Node3D
 
 var ball_start_position: Vector3 = Vector3(0, 1, -1.5)
-var last_contacts: Array[StringName]
+var last_contacts: Array[StringName] = [&"default", &"default", &"default"]
 var bounce_counterR: int = 0
 var bounce_counterB: int = 0
 var red_score: int
 var blue_score: int
+var rally_over: bool = false
+var serve_over: bool = false
+var contact_timer: float = 0.0
 @onready var ball: RigidBody3D = $Ball
 @onready var paddle = $RedPaddle
 @onready var reset_box = $ResetBox
@@ -30,7 +33,8 @@ func _process(delta):
 		can_reset = false
 		await get_tree().create_timer(0.5).timeout
 		can_reset = true
-	_score()
+	if contact_timer > 0:
+		contact_timer -= 1
 
 func reset_ball(): # Sets the ball to have zero gravity
 	#on startup or when rest box touched
@@ -42,6 +46,11 @@ func reset_ball(): # Sets the ball to have zero gravity
 	gravity_enabled = false
 	ball.freeze = false
 	ball.prev_ball_pos = ball_start_position
+	rally_over = false
+	serve_over = false
+	bounce_counterR = 0
+	bounce_counterB = 0
+	last_contacts.fill(&"default")
 
 
 func _on_ball_body_entered(body):
@@ -49,43 +58,45 @@ func _on_ball_body_entered(body):
 		ball.gravity_scale = normal_gravity_scale
 		gravity_enabled = true
 		print("gravity turned on after collision with ", body.name)
+	if contact_timer <= 0:
+		_score(body)
 		
-	last_contacts.push_back(body.name)
+func _score(body):
+	contact_timer = 0.15
+	last_contacts.push_front(body.name)
 	if last_contacts.size() > 3:
-		last_contacts.pop_front()
-	
-	if body.name == "RedPaddle":
-		print("Paddle velocity: ", paddle.tracked_velocity)
-		ball.linear_velocity += paddle.tracked_velocity * 1.5
-		print("Ball velocity after hit: ", ball.linear_velocity)
-		bounce_counterR = 0
-		bounce_counterB = 0
+		last_contacts.pop_back()
 		
-	match last_contacts[2]:
-		#&"RedPaddle":
-			#print("Paddle velocity: ", paddle.tracked_velocity)
-			#ball.linear_velocity += paddle.tracked_velocity * 1.5
-			#print("Ball velocity after hit: ", ball.linear_velocity)
-			#bounce_counterR = 0
-			#bounce_counterB = 0
+	match last_contacts[0]: # updates various counters
+		# based on which object the ball last contacted
+		&"RedPaddle":
+			bounce_counterR = 0
+			bounce_counterB = 0
+		&"BluePaddle":
+			bounce_counterR = 0
+			bounce_counterB = 0
 		&"Table":
 			if ball.global_position.z < 0:
 				bounce_counterR += 1
+				if bounce_counterR >= 2 && rally_over == false:
+					blue_score += 1;
+					rally_over = true
 			elif ball.global_position.z > 0:
 				bounce_counterB += 1
+				if bounce_counterB >= 2 && rally_over == false:
+					red_score += 1;
+					rally_over = true
 		&"Net":
-			if last_contacts[1] == &"RedPaddle":
+			if last_contacts[1] == &"RedPaddle" && rally_over == false:
 				blue_score += 1
-			elif last_contacts[1] == &"Paddle2":
+				rally_over = true
+			elif last_contacts[1] == &"BluePaddle" && rally_over == false:
 				red_score += 1
-				
-func _score():
-	if bounce_counterR >= 2:
-		blue_score += 1;
-	if bounce_counterB >= 2:
-		red_score += 1;
-
-	if ball.global_position.y < 0 && ball.global_position.z < 0 && (last_contacts[1] == &"Paddle2" || last_contacts[0] == &"Paddle2"):
-		blue_score += 1
-	if ball.global_position.y < 0 && ball.global_position.z > 0 && (last_contacts[1] == &"RedPaddle" || last_contacts[0] == &"RedPaddle"):
-		red_score += 1
+				rally_over = true
+		&"Floor Hitbox":
+			if ball.global_position.z < 0 && (last_contacts[1] == &"BluePaddle" || last_contacts[2] == &"BluePaddle") && rally_over == false:
+				blue_score += 1
+				rally_over = true
+			elif ball.global_position.z > 0 && (last_contacts[1] == &"RedPaddle" || last_contacts[2] == &"RedPaddle") && rally_over == false:
+				red_score += 1
+				rally_over = true

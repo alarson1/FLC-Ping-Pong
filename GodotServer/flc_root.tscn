@@ -11,7 +11,7 @@
 [ext_resource type="Script" uid="uid://8452xxaywfbc" path="res://game_root.gd" id="9_yox0r"]
 [ext_resource type="Script" uid="uid://dtfsc6vjgyexl" path="res://paddle.gd" id="10_b5x8u"]
 [ext_resource type="Script" uid="uid://b883mq5xk6euw" path="res://ball.gd" id="10_ya8bf"]
-[ext_resource type="Script" uid="uid://e2ph403hc11y" path="res://noodles_server/vrpn/vrpn_link.gd" id="11_ysgcl"]
+[ext_resource type="Script" uid="uid://y2784yt64hht" path="res://noodles_server/vrpn/vrpn_link.gd" id="11_ysgcl"]
 [ext_resource type="Script" uid="uid://bgy2ng6wf4s0f" path="res://score_manager.gd" id="13_bdqal"]
 [ext_resource type="Script" uid="uid://8ymnhmoatyrv" path="res://blue_paddle.gd" id="13_ya8bf"]
 
@@ -219,6 +219,8 @@ shape = SubResource("BoxShape3D_ya8bf")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="NoodlesRoot/GameRoot/Enviroment/Floor/Floor Hitbox"]
 mesh = SubResource("PlaneMesh_4mn5x")
 
+[node name="Label3D" type="Label3D" parent="NoodlesRoot/GameRoot/Enviroment"]
+
 [node name="ResetBox" type="Area3D" parent="NoodlesRoot/GameRoot"]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 1.00879, 1.18291, 0)
 
@@ -258,7 +260,6 @@ shape = SubResource("CylinderShape3D_n7y2j")
 script = ExtResource("11_ysgcl")
 vrpn_name = "MultiMeter"
 vrpn_server = "10.16.10.10"
-metadata/_custom_type_script = "uid://e2ph403hc11y"
 
 [node name="ScoreManager" type="Node3D" parent="NoodlesRoot/GameRoot"]
 script = ExtResource("13_bdqal")

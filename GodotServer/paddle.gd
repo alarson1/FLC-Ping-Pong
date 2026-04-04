@@ -26,7 +26,7 @@ func _physics_process(delta: float) -> void:
 	if velocity_history.size() > average_window:
 		velocity_history.pop_front()
 	
-	# average of velcoity of set number of frames
+	# average of velocity of set number of frames
 	var sum: Vector3 = Vector3.ZERO
 	for v in velocity_history:
 		sum += v
