@@ -1,7 +1,7 @@
 extends Node3D
 
 var ball_start_position: Vector3 = Vector3(0, 1, -1.5)
-var last_contacts: Array[StringName] = [&"default", &"default", &"default", &"default"]
+var last_contacts: Array[StringName] = [&"default", &"default", &"default", &"default", &"default"]
 var bounce_counterR: int = 0
 var bounce_counterB: int = 0
 var red_score: int = 0:
@@ -9,11 +9,13 @@ var red_score: int = 0:
 		red_score = value
 		if red_score_label != null:
 			(red_score_label.mesh as TextMesh).text = str(red_score)
+		_update_serve()
 var blue_score: int = 0:
 	set(value):
 		blue_score = value
 		if blue_score_label != null:
 			(blue_score_label.mesh as TextMesh).text = str(blue_score)
+		_update_serve()
 var rally_over: bool = false
 var serve_over: bool = false
 var contact_timer: float = 0.0
@@ -76,8 +78,11 @@ func _score(body): # tracks last four objects that the ball collided with,
 	# and updates score and relevant counters.
 	contact_timer = 0.15
 	last_contacts.push_front(body.name)
-	if last_contacts.size() > 4:
+	if last_contacts.size() > 5:
 		last_contacts.pop_back()
+		
+	if last_contacts[4] != &"default":
+		serve_over = true
 		
 	match last_contacts[0]:
 		&"RedPaddle":
@@ -108,6 +113,39 @@ func _score(body): # tracks last four objects that the ball collided with,
 			if ball.global_position.z < 0 && (bounce_counterR == 1) && (last_contacts[2] == &"BluePaddle" || last_contacts[3] == &"BluePaddle") && rally_over == false:
 				blue_score += 1
 				rally_over = true
-			elif ball.global_position.z > 0 && (bounce_counterB == 1) && (last_contacts[1] == &"RedPaddle" || last_contacts[3] == &"RedPaddle") && rally_over == false:
+			elif ball.global_position.z > 0 && (bounce_counterB == 1) && (last_contacts[2] == &"RedPaddle" || last_contacts[3] == &"RedPaddle") && rally_over == false:
 				red_score += 1
 				rally_over = true
+			elif (bounce_counterR == 0 && bounce_counterB == 0):
+				if (last_contacts[0] == &"BluePaddle") && (ball.global_position.z < 0) && (rally_over == false):
+					red_score += 1
+					rally_over = true
+				elif (last_contacts[0] == &"RedPaddle") && (ball.global_position.z > 0) && (rally_over == false):
+					blue_score += 1
+					rally_over = true
+func _update_serve():
+	var total_score: int = red_score + blue_score
+	var side_switch: bool = false
+	if (total_score > 0) && ((total_score % 2) == 0):
+		side_switch = !side_switch
+	if side_switch == false:
+		ball_start_position = Vector3(0, 1, -1.5)  # red serves
+	elif side_switch == true:
+		ball_start_position = Vector3(0, 1, 1.5)  # blue serves
+		
+# to track proper serve vs rally play
+#if ball.global_position.z < 0 && (bounce_counterR == 1) && rally_over == false:
+	#if (last_contacts[2] == &"BluePaddle") && (serve_over == true):
+		#blue_score += 1
+		#rally_over = true
+	#elif (last_contacts[3] == &"BluePaddle") && (last_contacts[2] == &"Table") && (serve_over == false):
+		#blue_score += 1
+		#rally_over = true
+#elif ball.global_position.z > 0 && (bounce_counterB == 1) && rally_over == false:
+	#if (last_contacts[2] == &"RedPaddle") && (serve_over == true):
+		#red_score += 1
+		#rally_over = true
+	#elif (last_contacts[3] == &"RedPaddle") && (last_contacts[2] == &"Table") && (serve_over == false):
+		#red_score += 1
+		#rally_over = true
+	

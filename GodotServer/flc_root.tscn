@@ -1,4 +1,4 @@
-[gd_scene load_steps=49 format=3 uid="uid://dgrr2wlovkt04"]
+[gd_scene load_steps=48 format=3 uid="uid://dgrr2wlovkt04"]
 
 [ext_resource type="Script" uid="uid://btt7awehlr7gh" path="res://flc_root.gd" id="1_7isue"]
 [ext_resource type="Script" uid="uid://dtsobsw7jo85h" path="res://SimLink.gd" id="1_vdn7q"]
@@ -12,7 +12,6 @@
 [ext_resource type="Script" uid="uid://dtfsc6vjgyexl" path="res://paddle.gd" id="10_b5x8u"]
 [ext_resource type="Script" uid="uid://b883mq5xk6euw" path="res://ball.gd" id="10_ya8bf"]
 [ext_resource type="Script" uid="uid://y2784yt64hht" path="res://noodles_server/vrpn/vrpn_link.gd" id="11_ysgcl"]
-[ext_resource type="Script" uid="uid://bgy2ng6wf4s0f" path="res://score_manager.gd" id="13_bdqal"]
 [ext_resource type="Script" uid="uid://8ymnhmoatyrv" path="res://blue_paddle.gd" id="13_ya8bf"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_rl4yx"]
@@ -236,12 +235,12 @@ shape = SubResource("BoxShape3D_ya8bf")
 mesh = SubResource("PlaneMesh_4mn5x")
 
 [node name="RedScoreBoard" type="MeshInstance3D" parent="NoodlesRoot/GameRoot/Enviroment"]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2, 1.5, -0.5)
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 2, 1.5, -0.5)
 mesh = SubResource("TextMesh_ya8bf")
 skin = SubResource("Skin_wuy68")
 
 [node name="BlueScoreBoard" type="MeshInstance3D" parent="NoodlesRoot/GameRoot/Enviroment"]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2, 1.5, 0.5)
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 2, 1.5, 0.5)
 mesh = SubResource("TextMesh_wuy68")
 skin = SubResource("Skin_4mn5x")
 
@@ -284,9 +283,6 @@ shape = SubResource("CylinderShape3D_n7y2j")
 script = ExtResource("11_ysgcl")
 vrpn_name = "MultiMeter"
 vrpn_server = "10.16.10.10"
-
-[node name="ScoreManager" type="Node3D" parent="NoodlesRoot/GameRoot"]
-script = ExtResource("13_bdqal")
 
 [connection signal="simulation_completed" from="SimLink" to="." method="intercept_sim"]
 [connection signal="simulation_failed" from="SimLink" to="." method="intercept_failed"]
