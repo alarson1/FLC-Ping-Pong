@@ -8,12 +8,12 @@ var red_score: int = 0:
 	set(value):
 		red_score = value
 		if red_score_label != null:
-			red_score_label.text = str(red_score)
+			(red_score_label.mesh as TextMesh).text = str(red_score)
 var blue_score: int = 0:
 	set(value):
 		blue_score = value
 		if blue_score_label != null:
-			blue_score_label.text = str(blue_score)
+			(blue_score_label.mesh as TextMesh).text = str(blue_score)
 var rally_over: bool = false
 var serve_over: bool = false
 var contact_timer: float = 0.0
@@ -24,8 +24,8 @@ var can_reset := true
 @onready var paddle = $RedPaddle
 @onready var reset_box = $ResetBox
 @onready var Bluepaddle = $BluePaddle
-@onready var red_score_label: Label3D = $Enviroment/RedScoreBoard
-@onready var blue_score_label: Label3D = $Enviroment/BlueScoreBoard
+@onready var red_score_label: MeshInstance3D = $Enviroment/RedScoreBoard
+@onready var blue_score_label: MeshInstance3D = $Enviroment/BlueScoreBoard
 
 
 func _ready():
@@ -33,8 +33,8 @@ func _ready():
 	normal_gravity_scale = ball.gravity_scale
 	ball.body_entered.connect(_on_ball_body_entered)
 	reset_ball()
-	red_score_label.text = str(red_score)
-	blue_score_label.text = str(blue_score)
+	(red_score_label.mesh as TextMesh).text = str(red_score)
+	(blue_score_label.mesh as TextMesh).text = str(blue_score)
 	
 func _process(delta):
 	if can_reset and paddle.global_position.distance_to(reset_box.global_position) < 0.25:
