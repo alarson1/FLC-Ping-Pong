@@ -219,7 +219,16 @@ shape = SubResource("BoxShape3D_ya8bf")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="NoodlesRoot/GameRoot/Enviroment/Floor/Floor Hitbox"]
 mesh = SubResource("PlaneMesh_4mn5x")
 
-[node name="Label3D" type="Label3D" parent="NoodlesRoot/GameRoot/Enviroment"]
+[node name="RedScoreBoard" type="Label3D" parent="NoodlesRoot/GameRoot/Enviroment"]
+transform = Transform3D(0.0347252, 0, 0.999397, 0, 1, 0, -0.999397, 0, 0.0347252, -2, 1.5, -0.5)
+modulate = Color(1, 0.0431373, 0, 1)
+text = "Red
+"
+
+[node name="BlueScoreBoard" type="Label3D" parent="NoodlesRoot/GameRoot/Enviroment"]
+transform = Transform3D(-0.00919775, 0, 0.999958, 0, 1, 0, -0.999958, 0, -0.00919775, -2, 1.5, 0.5)
+modulate = Color(0, 0, 1, 1)
+text = "Blue"
 
 [node name="ResetBox" type="Area3D" parent="NoodlesRoot/GameRoot"]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 1.00879, 1.18291, 0)
