@@ -1,14 +1,18 @@
-[gd_scene load_steps=16 format=3 uid="uid://dgrr2wlovkt04"]
+[gd_scene load_steps=48 format=3 uid="uid://dgrr2wlovkt04"]
 
 [ext_resource type="Script" uid="uid://btt7awehlr7gh" path="res://flc_root.gd" id="1_7isue"]
 [ext_resource type="Script" uid="uid://dtsobsw7jo85h" path="res://SimLink.gd" id="1_vdn7q"]
 [ext_resource type="Script" uid="uid://2y4u8e5ipege" path="res://sensing_template.gd" id="2_3yp5c"]
 [ext_resource type="PackedScene" uid="uid://cpk5g5h4rep12" path="res://noodles_server/utility/CameraRig.tscn" id="4_1ewb7"]
-[ext_resource type="Script" uid="uid://bxgkyu3asqsyw" path="res://noodles_server/noodles_server_root.gd" id="4_fqbtt"]
-[ext_resource type="Script" uid="uid://kw4urrci2g2a" path="res://noodles_server/vrpn/query_vrpn.gd" id="6_4prhv"]
-[ext_resource type="Script" uid="uid://2l2ysfmdgg82" path="res://noodles_server/position_set.gd" id="8_ih50r"]
-[ext_resource type="Script" uid="uid://wc0jcny4qd3i" path="res://noodles_server/position_updated.gd" id="9_bineq"]
-[ext_resource type="Script" uid="uid://e2ph403hc11y" path="res://noodles_server/vrpn/vrpn_link.gd" id="11_ysgcl"]
+[ext_resource type="Script" uid="uid://bd2o3f28cvvrh" path="res://noodles_server/noodles_server_root.gd" id="4_fqbtt"]
+[ext_resource type="Script" uid="uid://b2og305c3hvur" path="res://noodles_server/vrpn/query_vrpn.gd" id="6_4prhv"]
+[ext_resource type="Script" uid="uid://51ra3m3mhhjp" path="res://noodles_server/position_set.gd" id="8_ih50r"]
+[ext_resource type="Script" uid="uid://ctjnawnt8l8kn" path="res://noodles_server/position_updated.gd" id="9_bineq"]
+[ext_resource type="Script" uid="uid://8452xxaywfbc" path="res://game_root.gd" id="9_yox0r"]
+[ext_resource type="Script" uid="uid://dtfsc6vjgyexl" path="res://paddle.gd" id="10_b5x8u"]
+[ext_resource type="Script" uid="uid://b883mq5xk6euw" path="res://ball.gd" id="10_ya8bf"]
+[ext_resource type="Script" uid="uid://y2784yt64hht" path="res://noodles_server/vrpn/vrpn_link.gd" id="11_ysgcl"]
+[ext_resource type="Script" uid="uid://8ymnhmoatyrv" path="res://blue_paddle.gd" id="13_ya8bf"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_rl4yx"]
 
@@ -21,11 +25,106 @@ sky = SubResource("Sky_iechx")
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_tqtmi"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8eu5y"]
+[sub_resource type="SphereShape3D" id="SphereShape3D_fp5tf"]
+margin = 0.001
+radius = 0.04
 
-[sub_resource type="BoxMesh" id="BoxMesh_5t1vn"]
-material = SubResource("StandardMaterial3D_8eu5y")
-size = Vector3(0.2, 0.2, 0.2)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ya8bf"]
+albedo_color = Color(0.48, 0.48, 0.48, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_wuy68"]
+material = SubResource("StandardMaterial3D_ya8bf")
+radius = 0.04
+height = 0.08
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_bdqal"]
+friction = 0.05
+bounce = 0.8
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_b5x8u"]
+size = Vector3(2.74, 0.04, 1.525)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1xjvr"]
+albedo_color = Color(0.0313726, 0.247059, 0.905882, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_yox0r"]
+material = SubResource("StandardMaterial3D_1xjvr")
+size = Vector3(1.37, 0.04, 1.525)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4mn5x"]
+albedo_color = Color(1, 0.06, 0.06, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_yvnwv"]
+material = SubResource("StandardMaterial3D_4mn5x")
+size = Vector3(1.37, 0.04, 1.52)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wuy68"]
+size = Vector3(0.005, 0.152, 1.525)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fp5tf"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_bdqal"]
+material = SubResource("StandardMaterial3D_fp5tf")
+size = Vector3(0.005, 0.153, 1.525)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ya8bf"]
+size = Vector3(15, 0.1, 15)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wuy68"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_4mn5x"]
+material = SubResource("StandardMaterial3D_wuy68")
+size = Vector2(15, 15)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jbdoi"]
+albedo_color = Color(0.960784, 0.00392157, 0.0313726, 1)
+
+[sub_resource type="TextMesh" id="TextMesh_ya8bf"]
+material = SubResource("StandardMaterial3D_jbdoi")
+
+[sub_resource type="Skin" id="Skin_wuy68"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n7y2j"]
+albedo_color = Color(0.0117647, 0.0117647, 1, 1)
+
+[sub_resource type="TextMesh" id="TextMesh_wuy68"]
+material = SubResource("StandardMaterial3D_n7y2j")
+
+[sub_resource type="Skin" id="Skin_4mn5x"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bdqal"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_ya8bf"]
+material = SubResource("StandardMaterial3D_bdqal")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4mn5x"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_bdqal"]
+height = 0.085
+radius = 0.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yvnwv"]
+albedo_color = Color(1, 0.09, 0.09, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_i2xyj"]
+material = SubResource("StandardMaterial3D_yvnwv")
+top_radius = 0.16
+bottom_radius = 0.16
+height = 0.015
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i2xyj"]
+albedo_color = Color(0.0509804, 0.054902, 1, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_jbdoi"]
+material = SubResource("StandardMaterial3D_i2xyj")
+top_radius = 0.08
+bottom_radius = 0.08
+height = 0.015
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_n7y2j"]
+height = 0.015
+radius = 0.08
 
 [node name="FLCRoot" type="Node3D"]
 script = ExtResource("1_7isue")
@@ -39,6 +138,7 @@ host_port = 5001
 
 [node name="CameraRig" parent="." instance=ExtResource("4_1ewb7")]
 spring_length = 2.0
+maxZoom = 1.0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_sqvvf")
@@ -46,6 +146,12 @@ camera_attributes = SubResource("CameraAttributesPractical_tqtmi")
 
 [node name="NoodlesRoot" type="Node3D" parent="."]
 script = ExtResource("4_fqbtt")
+buffer_limit = 20
+max_message_length = 6
+client_queue_rate = 12
+max_queue_size_per_client = 4000
+network_send_rate = 15
+port = 50003
 hostname = "10.1.3.94"
 
 [node name="VRPNQuery" type="Node3D" parent="NoodlesRoot" node_paths=PackedStringArray("relative_to")]
@@ -65,14 +171,118 @@ script = ExtResource("9_bineq")
 relative_to = NodePath("..")
 function_name = "position_updated"
 
-[node name="Object" type="MeshInstance3D" parent="NoodlesRoot"]
-mesh = SubResource("BoxMesh_5t1vn")
+[node name="GameRoot" type="Node3D" parent="NoodlesRoot"]
+script = ExtResource("9_yox0r")
 
-[node name="VRPNLink" type="Node" parent="NoodlesRoot/Object"]
+[node name="Ball" type="RigidBody3D" parent="NoodlesRoot/GameRoot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.99117, 0)
+mass = 0.003
+can_sleep = false
+continuous_cd = true
+contact_monitor = true
+max_contacts_reported = 8
+linear_damp = 0.03
+angular_damp = 0.04
+script = ExtResource("10_ya8bf")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NoodlesRoot/GameRoot/Ball"]
+shape = SubResource("SphereShape3D_fp5tf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NoodlesRoot/GameRoot/Ball"]
+mesh = SubResource("SphereMesh_wuy68")
+
+[node name="Enviroment" type="Node3D" parent="NoodlesRoot/GameRoot"]
+
+[node name="Table&net" type="Node3D" parent="NoodlesRoot/GameRoot/Enviroment"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)
+
+[node name="Table" type="StaticBody3D" parent="NoodlesRoot/GameRoot/Enviroment/Table&net"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+physics_material_override = SubResource("PhysicsMaterial_bdqal")
+
+[node name="HitBoxBlue" type="CollisionShape3D" parent="NoodlesRoot/GameRoot/Enviroment/Table&net/Table"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.74, 0)
+shape = SubResource("BoxShape3D_b5x8u")
+
+[node name="MeshInstance3DBlue" type="MeshInstance3D" parent="NoodlesRoot/GameRoot/Enviroment/Table&net/Table"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.685, 0.74, 0)
+mesh = SubResource("BoxMesh_yox0r")
+
+[node name="MeshInstance3D2Red" type="MeshInstance3D" parent="NoodlesRoot/GameRoot/Enviroment/Table&net/Table"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.685, 0.74, 0)
+mesh = SubResource("BoxMesh_yvnwv")
+
+[node name="Net" type="StaticBody3D" parent="NoodlesRoot/GameRoot/Enviroment/Table&net/Table"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NoodlesRoot/GameRoot/Enviroment/Table&net/Table/Net"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.835, 0)
+shape = SubResource("BoxShape3D_wuy68")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NoodlesRoot/GameRoot/Enviroment/Table&net/Table/Net"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.835, 0)
+mesh = SubResource("BoxMesh_bdqal")
+
+[node name="Floor" type="Node3D" parent="NoodlesRoot/GameRoot/Enviroment"]
+
+[node name="Floor Hitbox" type="StaticBody3D" parent="NoodlesRoot/GameRoot/Enviroment/Floor"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NoodlesRoot/GameRoot/Enviroment/Floor/Floor Hitbox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0)
+visible = false
+shape = SubResource("BoxShape3D_ya8bf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NoodlesRoot/GameRoot/Enviroment/Floor/Floor Hitbox"]
+mesh = SubResource("PlaneMesh_4mn5x")
+
+[node name="RedScoreBoard" type="MeshInstance3D" parent="NoodlesRoot/GameRoot/Enviroment"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 2, 1.5, -0.5)
+mesh = SubResource("TextMesh_ya8bf")
+skin = SubResource("Skin_wuy68")
+
+[node name="BlueScoreBoard" type="MeshInstance3D" parent="NoodlesRoot/GameRoot/Enviroment"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 2, 1.5, 0.5)
+mesh = SubResource("TextMesh_wuy68")
+skin = SubResource("Skin_4mn5x")
+
+[node name="ResetBox" type="Area3D" parent="NoodlesRoot/GameRoot"]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 1.00879, 1.18291, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NoodlesRoot/GameRoot/ResetBox"]
+mesh = SubResource("BoxMesh_ya8bf")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NoodlesRoot/GameRoot/ResetBox"]
+shape = SubResource("BoxShape3D_4mn5x")
+
+[node name="RedPaddle" type="StaticBody3D" parent="NoodlesRoot/GameRoot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.575516, 0, 0)
+script = ExtResource("10_b5x8u")
+
+[node name="VRPNLink" type="Node" parent="NoodlesRoot/GameRoot/RedPaddle"]
 script = ExtResource("11_ysgcl")
-vrpn_name = "Object"
+vrpn_name = "RedPaddle"
 vrpn_server = "10.16.10.10"
-pre_transform_rotation = Quaternion(0, 1, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NoodlesRoot/GameRoot/RedPaddle"]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
+shape = SubResource("CylinderShape3D_bdqal")
+
+[node name="RedPaddle" type="MeshInstance3D" parent="NoodlesRoot/GameRoot/RedPaddle"]
+mesh = SubResource("CylinderMesh_i2xyj")
+skeleton = NodePath("../../..")
+
+[node name="BluePaddle" type="StaticBody3D" parent="NoodlesRoot/GameRoot"]
+script = ExtResource("13_ya8bf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NoodlesRoot/GameRoot/BluePaddle"]
+mesh = SubResource("CylinderMesh_jbdoi")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NoodlesRoot/GameRoot/BluePaddle"]
+shape = SubResource("CylinderShape3D_n7y2j")
+
+[node name="VRPNLink" type="Node" parent="NoodlesRoot/GameRoot/BluePaddle"]
+script = ExtResource("11_ysgcl")
+vrpn_name = "MultiMeter"
+vrpn_server = "10.16.10.10"
 
 [connection signal="simulation_completed" from="SimLink" to="." method="intercept_sim"]
 [connection signal="simulation_failed" from="SimLink" to="." method="intercept_failed"]
