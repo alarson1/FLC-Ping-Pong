@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="FLC Godot Template"
+config/name="PingPong"
 run/main_scene="res://flc_root.tscn"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
