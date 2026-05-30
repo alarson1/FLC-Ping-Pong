@@ -22,6 +22,7 @@ var contact_timer: float = 0.0
 var normal_gravity_scale := 1.0
 var gravity_enabled := false
 var can_reset := true
+var side_switch: bool = false
 @onready var ball: RigidBody3D = $Ball
 @onready var paddle = $RedPaddle
 @onready var reset_box = $ResetBox
@@ -94,12 +95,12 @@ func _score(body): # tracks last four objects that the ball collided with,
 		&"Table":
 			if ball.global_position.z < 0:
 				bounce_counterR += 1
-				if bounce_counterR >= 2 && rally_over == false:
+				if bounce_counterR >= 2 && rally_over == false && serve_over == true:
 					blue_score += 1;
 					rally_over = true
 			elif ball.global_position.z > 0:
 				bounce_counterB += 1
-				if bounce_counterB >= 2 && rally_over == false:
+				if bounce_counterB >= 2 && rally_over == false && serve_over == true:
 					red_score += 1;
 					rally_over = true
 		&"Net":
@@ -125,7 +126,6 @@ func _score(body): # tracks last four objects that the ball collided with,
 					rally_over = true
 func _update_serve():
 	var total_score: int = red_score + blue_score
-	var side_switch: bool = false
 	if (total_score > 0) && ((total_score % 2) == 0):
 		side_switch = !side_switch
 	if side_switch == false:
