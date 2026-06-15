@@ -1,4 +1,4 @@
-extends StaticBody3D # Or AnimatableBody3D
+extends StaticBody3D 
 
 var previous_position: Vector3
 var tracked_velocity: Vector3 = Vector3.ZERO
@@ -17,7 +17,7 @@ func _physics_process(delta: float) -> void:
 
 	var current_velocity: Vector3 = (global_position - previous_position) / delta
 	
-	# 2.If the movement is jitter, treat as zero
+	# If the movement is jitter, treat as zero
 	if current_velocity.length() < velocity_deadzone:
 		current_velocity = Vector3.ZERO
 
@@ -37,8 +37,6 @@ func _physics_process(delta: float) -> void:
 		# delta is the time in seconds for this frame (e.g., 0.016667 for 60 FPS)
 	var current_fps = 1.0 / delta
 	
-	# Print it to the output console (warning: this will spam your console)
-	print("Frame time: ", delta * 1000, "ms | FPS: ", current_fps)
 
 func get_tracked_velocity() -> Vector3:
 	return tracked_velocity

@@ -1,4 +1,4 @@
-[gd_scene load_steps=54 format=3 uid="uid://dgrr2wlovkt04"]
+[gd_scene load_steps=50 format=3 uid="uid://dgrr2wlovkt04"]
 
 [ext_resource type="Script" uid="uid://btt7awehlr7gh" path="res://flc_root.gd" id="1_7isue"]
 [ext_resource type="Script" uid="uid://dtsobsw7jo85h" path="res://SimLink.gd" id="1_vdn7q"]
@@ -120,16 +120,6 @@ material = SubResource("StandardMaterial3D_8ysrb")
 radius = 0.01
 height = 0.02
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_p3bef"]
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_yikum"]
-material = SubResource("StandardMaterial3D_p3bef")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1mwfr"]
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_offyx"]
-material = SubResource("StandardMaterial3D_1mwfr")
-
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i2xyj"]
 albedo_color = Color(0.0509804, 0.054902, 1, 1)
 
@@ -155,7 +145,6 @@ host_port = 5001
 
 [node name="CameraRig" parent="." instance=ExtResource("4_1ewb7")]
 spring_length = 2.0
-maxZoom = 1.0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_sqvvf")
@@ -250,6 +239,7 @@ visible = false
 shape = SubResource("BoxShape3D_ya8bf")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="NoodlesRoot/GameRoot/Enviroment/Floor/Floor Hitbox"]
+visible = false
 mesh = SubResource("PlaneMesh_4mn5x")
 
 [node name="RedScoreBoard" type="MeshInstance3D" parent="NoodlesRoot/GameRoot/Enviroment"]
@@ -273,42 +263,30 @@ shape = SubResource("BoxShape3D_4mn5x")
 
 [node name="RedPaddle" type="Node3D" parent="NoodlesRoot/GameRoot"]
 
-[node name="VRPNLink" type="Node" parent="NoodlesRoot/GameRoot/RedPaddle"]
-script = ExtResource("11_ysgcl")
-vrpn_name = "BluePaddle"
-vrpn_server = "10.16.10.10"
-tweak_rx = -3.344
-tweak_ry = -7.164
-tweak_rz = 0.61
-average_over_frames = 8
-
 [node name="PaddlePivot" type="Node3D" parent="NoodlesRoot/GameRoot/RedPaddle"]
 
 [node name="RedPaddleColl" type="StaticBody3D" parent="NoodlesRoot/GameRoot/RedPaddle/PaddlePivot"]
+transform = Transform3D(0.450878, -0.608742, 0.652796, 0, 0.731354, 0.681998, -0.892586, -0.307498, 0.329751, 0, 0, 0)
 script = ExtResource("10_b5x8u")
 velocity_deadzone = 0.3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="NoodlesRoot/GameRoot/RedPaddle/PaddlePivot/RedPaddleColl"]
-transform = Transform3D(0.152886, -0.127896, 0.0163799, 0.116223, 0.147693, 0.068404, -0.0558391, -0.0427717, 0.187223, 0, 0, 0)
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
 shape = SubResource("CylinderShape3D_bdqal")
 
 [node name="RedPaddle" type="MeshInstance3D" parent="NoodlesRoot/GameRoot/RedPaddle/PaddlePivot/RedPaddleColl"]
-transform = Transform3D(0.764432, -0.639481, 0.0818996, 0.581114, 0.738464, 0.34202, -0.279195, -0.213858, 0.936117, 0, 0, 0)
 mesh = SubResource("CylinderMesh_i2xyj")
 skeleton = NodePath("../../../../..")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="NoodlesRoot/GameRoot/RedPaddle/PaddlePivot"]
 mesh = SubResource("SphereMesh_bdqal")
 
-[node name="VelArrow" type="Node3D" parent="NoodlesRoot/GameRoot/RedPaddle"]
-
-[node name="ArrowTip" type="MeshInstance3D" parent="NoodlesRoot/GameRoot/RedPaddle/VelArrow"]
-mesh = SubResource("CylinderMesh_yikum")
-skeleton = NodePath("../..")
-
-[node name="ArrowBody" type="MeshInstance3D" parent="NoodlesRoot/GameRoot/RedPaddle/VelArrow"]
-mesh = SubResource("CylinderMesh_offyx")
-skeleton = NodePath("../ArrowTip")
+[node name="VRPNLink" type="Node" parent="NoodlesRoot/GameRoot/RedPaddle"]
+script = ExtResource("11_ysgcl")
+vrpn_name = "BluePaddle"
+vrpn_server = "10.16.10.10"
+post_transform_offset = Vector3(0, 0.025, 0)
+average_over_frames = 8
 
 [node name="BluePaddle" type="StaticBody3D" parent="NoodlesRoot/GameRoot"]
 script = ExtResource("13_ya8bf")
