@@ -1,18 +1,17 @@
-[gd_scene load_steps=50 format=3 uid="uid://dgrr2wlovkt04"]
+[gd_scene load_steps=51 format=3 uid="uid://dgrr2wlovkt04"]
 
 [ext_resource type="Script" uid="uid://btt7awehlr7gh" path="res://flc_root.gd" id="1_7isue"]
 [ext_resource type="Script" uid="uid://dtsobsw7jo85h" path="res://SimLink.gd" id="1_vdn7q"]
 [ext_resource type="Script" uid="uid://2y4u8e5ipege" path="res://sensing_template.gd" id="2_3yp5c"]
 [ext_resource type="PackedScene" uid="uid://cpk5g5h4rep12" path="res://noodles_server/utility/CameraRig.tscn" id="4_1ewb7"]
-[ext_resource type="Script" uid="uid://bd2o3f28cvvrh" path="res://noodles_server/noodles_server_root.gd" id="4_fqbtt"]
-[ext_resource type="Script" uid="uid://b2og305c3hvur" path="res://noodles_server/vrpn/query_vrpn.gd" id="6_4prhv"]
-[ext_resource type="Script" uid="uid://51ra3m3mhhjp" path="res://noodles_server/position_set.gd" id="8_ih50r"]
-[ext_resource type="Script" uid="uid://ctjnawnt8l8kn" path="res://noodles_server/position_updated.gd" id="9_bineq"]
+[ext_resource type="Script" uid="uid://bxgkyu3asqsyw" path="res://noodles_server/noodles_server_root.gd" id="4_fqbtt"]
+[ext_resource type="Script" uid="uid://kw4urrci2g2a" path="res://noodles_server/vrpn/query_vrpn.gd" id="6_4prhv"]
+[ext_resource type="Script" uid="uid://2l2ysfmdgg82" path="res://noodles_server/position_set.gd" id="8_ih50r"]
+[ext_resource type="Script" uid="uid://wc0jcny4qd3i" path="res://noodles_server/position_updated.gd" id="9_bineq"]
 [ext_resource type="Script" uid="uid://8452xxaywfbc" path="res://game_root.gd" id="9_yox0r"]
 [ext_resource type="Script" uid="uid://dtfsc6vjgyexl" path="res://paddle.gd" id="10_b5x8u"]
 [ext_resource type="Script" uid="uid://b883mq5xk6euw" path="res://ball.gd" id="10_ya8bf"]
-[ext_resource type="Script" uid="uid://y2784yt64hht" path="res://noodles_server/vrpn/vrpn_link.gd" id="11_ysgcl"]
-[ext_resource type="Script" uid="uid://8ymnhmoatyrv" path="res://blue_paddle.gd" id="13_ya8bf"]
+[ext_resource type="Script" uid="uid://e2ph403hc11y" path="res://noodles_server/vrpn/vrpn_link.gd" id="11_ysgcl"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_rl4yx"]
 
@@ -120,18 +119,25 @@ material = SubResource("StandardMaterial3D_8ysrb")
 radius = 0.01
 height = 0.02
 
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_fp5tf"]
+height = 0.085
+radius = 0.8
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i2xyj"]
-albedo_color = Color(0.0509804, 0.054902, 1, 1)
+albedo_color = Color(0.234519, 0.541506, 0.922434, 1)
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_jbdoi"]
 material = SubResource("StandardMaterial3D_i2xyj")
-top_radius = 0.08
-bottom_radius = 0.08
+top_radius = 0.16
+bottom_radius = 0.16
 height = 0.015
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_n7y2j"]
-height = 0.015
-radius = 0.08
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_p3bef"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_yikum"]
+material = SubResource("StandardMaterial3D_p3bef")
+radius = 0.01
+height = 0.02
 
 [node name="FLCRoot" type="Node3D"]
 script = ExtResource("1_7isue")
@@ -283,24 +289,37 @@ mesh = SubResource("SphereMesh_bdqal")
 
 [node name="VRPNLink" type="Node" parent="NoodlesRoot/GameRoot/RedPaddle"]
 script = ExtResource("11_ysgcl")
-vrpn_name = "BluePaddle"
+vrpn_name = "RedPaddle"
 vrpn_server = "10.16.10.10"
 post_transform_offset = Vector3(0, 0.025, 0)
 average_over_frames = 8
 
-[node name="BluePaddle" type="StaticBody3D" parent="NoodlesRoot/GameRoot"]
-script = ExtResource("13_ya8bf")
+[node name="BluePaddle" type="Node3D" parent="NoodlesRoot/GameRoot"]
 
-[node name="BluePaddle" type="MeshInstance3D" parent="NoodlesRoot/GameRoot/BluePaddle"]
+[node name="PaddlePivot" type="Node3D" parent="NoodlesRoot/GameRoot/BluePaddle"]
+
+[node name="BluePaddleColl" type="StaticBody3D" parent="NoodlesRoot/GameRoot/BluePaddle/PaddlePivot"]
+transform = Transform3D(0.450878, -0.608742, 0.652796, 0, 0.731354, 0.681998, -0.892586, -0.307498, 0.329751, 0, 0, 0)
+script = ExtResource("10_b5x8u")
+velocity_deadzone = 0.3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NoodlesRoot/GameRoot/BluePaddle/PaddlePivot/BluePaddleColl"]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
+shape = SubResource("CylinderShape3D_fp5tf")
+
+[node name="BluePaddle" type="MeshInstance3D" parent="NoodlesRoot/GameRoot/BluePaddle/PaddlePivot/BluePaddleColl"]
 mesh = SubResource("CylinderMesh_jbdoi")
+skeleton = NodePath("../../../..")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="NoodlesRoot/GameRoot/BluePaddle"]
-shape = SubResource("CylinderShape3D_n7y2j")
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NoodlesRoot/GameRoot/BluePaddle/PaddlePivot"]
+mesh = SubResource("SphereMesh_yikum")
 
 [node name="VRPNLink" type="Node" parent="NoodlesRoot/GameRoot/BluePaddle"]
 script = ExtResource("11_ysgcl")
-vrpn_name = " BluePaddle"
+vrpn_name = "BluePaddle"
 vrpn_server = "10.16.10.10"
+post_transform_offset = Vector3(0, 0.025, 0)
+average_over_frames = 8
 
 [connection signal="simulation_completed" from="SimLink" to="." method="intercept_sim"]
 [connection signal="simulation_failed" from="SimLink" to="." method="intercept_failed"]
