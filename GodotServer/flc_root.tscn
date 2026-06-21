@@ -272,7 +272,7 @@ shape = SubResource("BoxShape3D_4mn5x")
 [node name="PaddlePivot" type="Node3D" parent="NoodlesRoot/GameRoot/RedPaddle"]
 
 [node name="RedPaddleColl" type="StaticBody3D" parent="NoodlesRoot/GameRoot/RedPaddle/PaddlePivot"]
-transform = Transform3D(0.450878, -0.608742, 0.652796, 0, 0.731354, 0.681998, -0.892586, -0.307498, 0.329751, 0, 0, 0)
+transform = Transform3D(0.909962, 0.105232, 0.401119, 0, 0.967268, -0.253758, -0.414693, 0.23091, 0.880176, 0, 0, 0)
 script = ExtResource("10_b5x8u")
 velocity_deadzone = 0.3
 

@@ -24,9 +24,9 @@ var gravity_enabled := false
 var can_reset := true
 var side_switch: bool = false
 @onready var ball: RigidBody3D = $Ball
-@onready var paddle = $RedPaddle
+@onready var red_paddle = $RedPaddle
 @onready var reset_box = $ResetBox
-@onready var Bluepaddle = $BluePaddle
+@onready var blue_paddle = $BluePaddle
 @onready var red_score_label: MeshInstance3D = $Enviroment/RedScoreBoard
 @onready var blue_score_label: MeshInstance3D = $Enviroment/BlueScoreBoard
 
@@ -40,17 +40,22 @@ func _ready():
 	(blue_score_label.mesh as TextMesh).text = str(blue_score)
 	
 func _process(delta):
-	if can_reset and paddle.global_position.distance_to(reset_box.global_position) < 0.25:
+	# Check if either the red paddle OR the blue paddle is touching the reset box
+	var red_touching = red_paddle.global_position.distance_to(reset_box.global_position) < 0.25
+	var blue_touching = blue_paddle.global_position.distance_to(reset_box.global_position) < 0.25
+
+	if can_reset and (red_touching or blue_touching):
 		print("Reset Ball")
 		reset_ball()
 		can_reset = false
 		await get_tree().create_timer(0.5).timeout
 		can_reset = true
+		
 	if contact_timer > 0: # contact timer so only one contact body is logged per collision
 		contact_timer -= 1
 
 func reset_ball(): # Sets the ball to have zero gravity
-	#on startup or when rest box touched, resets to default position,
+	#on startup or when reset box touched, resets to default position,
 	# and resets contact tracking
 	ball.freeze = true
 	ball.global_position = ball_start_position
