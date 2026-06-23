@@ -51,8 +51,9 @@ func _process(delta):
 		await get_tree().create_timer(0.5).timeout
 		can_reset = true
 		
-	if contact_timer > 0: # contact timer so only one contact body is logged per collision
-		contact_timer -= 1
+	if contact_timer > 0.0: # contact timer so only one contact body is logged per collision
+		# Subtract delta time so the countdown scales properly with the frame rate
+		contact_timer -= delta
 
 func reset_ball(): # Sets the ball to have zero gravity
 	#on startup or when reset box touched, resets to default position,
@@ -77,7 +78,7 @@ func _on_ball_body_entered(body):
 		ball.gravity_scale = normal_gravity_scale
 		gravity_enabled = true
 		print("gravity turned on after collision with ", body.name)
-	if contact_timer <= 0: # calls contact tracking
+	if contact_timer <= 0.0: # calls contact tracking
 		_score(body)
 		
 func _score(body): # tracks last four objects that the ball collided with,
@@ -100,12 +101,14 @@ func _score(body): # tracks last four objects that the ball collided with,
 		&"Table":
 			if ball.global_position.z < 0:
 				bounce_counterR += 1
-				if bounce_counterR >= 2 && rally_over == false && serve_over == true:
+				# Removed "&& serve_over == true" so a double bounce always triggers a point loss
+				if bounce_counterR >= 2 && rally_over == false:
 					blue_score += 1;
 					rally_over = true
 			elif ball.global_position.z > 0:
 				bounce_counterB += 1
-				if bounce_counterB >= 2 && rally_over == false && serve_over == true:
+				# Removed "&& serve_over == true" so a double bounce always triggers a point loss
+				if bounce_counterB >= 2 && rally_over == false:
 					red_score += 1;
 					rally_over = true
 		&"Net":
@@ -153,4 +156,3 @@ func _update_serve():
 	#elif (last_contacts[3] == &"RedPaddle") && (last_contacts[2] == &"Table") && (serve_over == false):
 		#red_score += 1
 		#rally_over = true
-	
